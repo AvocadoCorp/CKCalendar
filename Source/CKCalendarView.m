@@ -20,7 +20,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CKCalendarView.h"
 
-#define DAYS_HEADER_HEIGHT 22
 #define DEFAULT_CELL_WIDTH 43
 #define CELL_BORDER_WIDTH 1
 
@@ -133,6 +132,7 @@
 @synthesize calendarCornerRadius = _calendarCornerRadius;
 @synthesize highlightVisible = _highlightVisible;
 @synthesize topHeight = _topHeight;
+@synthesize daysHeaderHeight = _daysHeaderHeight;
 @synthesize cellWidth = _cellWidth;
 
 @synthesize calendarStartDay = _calendarStartDay;
@@ -267,7 +267,7 @@
 
 - (CGFloat)containerHeight
 {
-    return ([self numberOfWeeksInMonthContainingDate:self.monthShowing] * (self.cellWidth + CELL_BORDER_WIDTH) + DAYS_HEADER_HEIGHT);
+    return ([self numberOfWeeksInMonthContainingDate:self.monthShowing] * (self.cellWidth + CELL_BORDER_WIDTH) + self.daysHeaderHeight);
 }
 
 - (CGFloat)containerWidth
@@ -296,7 +296,7 @@
     self.nextButton.frame = CGRectMake(self.bounds.size.width - 48 - buttonMargin, buttonMargin, 48, 38);
 
     self.calendarContainer.frame = CGRectMake(self.calendarMargin, CGRectGetMaxY(self.titleLabel.frame), containerWidth, containerHeight);
-    self.daysHeader.frame = CGRectMake(0, 0, self.calendarContainer.frame.size.width, DAYS_HEADER_HEIGHT);
+    self.daysHeader.frame = CGRectMake(0, 0, self.calendarContainer.frame.size.width, self.daysHeaderHeight);
 
     CGRect lastDayFrame = CGRectZero;
     for (UILabel *dayLabel in self.dayOfWeekLabels) {
@@ -404,6 +404,7 @@
     _cornerRadius = 6.0;
     _calendarCornerRadius = 4.0;
     _topHeight = 44.0;
+    _daysHeaderHeight = 22.0;
 
     [self setTitleColor:[UIColor whiteColor]];
     [self setTitleFont:[UIFont boldSystemFontOfSize:17.0]];
@@ -560,6 +561,12 @@
 - (void)setTopHeight:(CGFloat)topHeight
 {
     _topHeight = topHeight;
+    [self setNeedsLayout];
+}
+
+- (void)setDaysHeaderHeight:(CGFloat)daysHeaderHeight
+{
+    _daysHeaderHeight = daysHeaderHeight;
     [self setNeedsLayout];
 }
 

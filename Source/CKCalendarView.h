@@ -79,6 +79,7 @@ typedef int startDay;
 @property (nonatomic, assign) CGFloat calendarCornerRadius;
 @property (nonatomic, assign) BOOL highlightVisible;
 @property (nonatomic, assign) CGFloat topHeight;
+@property (nonatomic, assign) CGFloat daysHeaderHeight;
 
 @end
 
