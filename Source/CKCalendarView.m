@@ -21,7 +21,6 @@
 #import "CKCalendarView.h"
 
 #define BUTTON_MARGIN 4
-#define CALENDAR_MARGIN 5
 #define TOP_HEIGHT 44
 #define DAYS_HEADER_HEIGHT 22
 #define DEFAULT_CELL_WIDTH 43
@@ -131,6 +130,7 @@
 @synthesize nonCurrentMonthDateTextColor = _nonCurrentMonthDateTextColor;
 @synthesize disabledDateTextColor = _disabledDateTextColor;
 @synthesize disabledDateBackgroundColor = _disabledDateBackgroundColor;
+@synthesize calendarMargin = _calendarMargin;
 @synthesize cellWidth = _cellWidth;
 
 @synthesize calendarStartDay = _calendarStartDay;
@@ -259,14 +259,14 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    CGFloat containerWidth = self.bounds.size.width - (CALENDAR_MARGIN * 2);
+    CGFloat containerWidth = self.bounds.size.width - (self.calendarMargin * 2);
     self.cellWidth = (containerWidth / 7.0) - CELL_BORDER_WIDTH;
 
     CGFloat containerHeight = ([self numberOfWeeksInMonthContainingDate:self.monthShowing] * (self.cellWidth + CELL_BORDER_WIDTH) + DAYS_HEADER_HEIGHT);
 
 
     CGRect newFrame = self.frame;
-    newFrame.size.height = containerHeight + CALENDAR_MARGIN + TOP_HEIGHT;
+    newFrame.size.height = containerHeight + self.calendarMargin + TOP_HEIGHT;
     self.frame = newFrame;
 
     self.highlight.frame = CGRectMake(1, 1, self.bounds.size.width - 2, 1);
@@ -275,7 +275,7 @@
     self.prevButton.frame = CGRectMake(BUTTON_MARGIN, BUTTON_MARGIN, 48, 38);
     self.nextButton.frame = CGRectMake(self.bounds.size.width - 48 - BUTTON_MARGIN, BUTTON_MARGIN, 48, 38);
 
-    self.calendarContainer.frame = CGRectMake(CALENDAR_MARGIN, CGRectGetMaxY(self.titleLabel.frame), containerWidth, containerHeight);
+    self.calendarContainer.frame = CGRectMake(self.calendarMargin, CGRectGetMaxY(self.titleLabel.frame), containerWidth, containerHeight);
     self.daysHeader.frame = CGRectMake(0, 0, self.calendarContainer.frame.size.width, DAYS_HEADER_HEIGHT);
 
     CGRect lastDayFrame = CGRectZero;
@@ -367,6 +367,8 @@
 
 - (void)setDefaultStyle {
     self.backgroundColor = UIColorFromRGB(0x393B40);
+
+    _calendarMargin = 5;
 
     [self setTitleColor:[UIColor whiteColor]];
     [self setTitleFont:[UIFont boldSystemFontOfSize:17.0]];
