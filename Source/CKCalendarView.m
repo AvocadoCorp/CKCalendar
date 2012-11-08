@@ -20,7 +20,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CKCalendarView.h"
 
-#define TOP_HEIGHT 44
 #define DAYS_HEADER_HEIGHT 22
 #define DEFAULT_CELL_WIDTH 43
 #define CELL_BORDER_WIDTH 1
@@ -133,6 +132,7 @@
 @synthesize cornerRadius = _cornerRadius;
 @synthesize calendarCornerRadius = _calendarCornerRadius;
 @synthesize highlightVisible = _highlightVisible;
+@synthesize topHeight = _topHeight;
 @synthesize cellWidth = _cellWidth;
 
 @synthesize calendarStartDay = _calendarStartDay;
@@ -270,13 +270,13 @@
 
 
     CGRect newFrame = self.frame;
-    newFrame.size.height = containerHeight + self.calendarMargin + TOP_HEIGHT;
+    newFrame.size.height = containerHeight + self.calendarMargin + self.topHeight;
     self.frame = newFrame;
 
     self.highlight.frame = CGRectMake(1, 1, self.bounds.size.width - 2, 1);
 
-    self.titleLabel.frame = CGRectMake(0, 0, self.bounds.size.width, TOP_HEIGHT);
-    CGFloat buttonMargin = (TOP_HEIGHT - 38) / 2.0;
+    self.titleLabel.frame = CGRectMake(0, 0, self.bounds.size.width, self.topHeight);
+    CGFloat buttonMargin = (self.topHeight - 38) / 2.0;
     self.prevButton.frame = CGRectMake(buttonMargin, buttonMargin, 48, 38);
     self.nextButton.frame = CGRectMake(self.bounds.size.width - 48 - buttonMargin, buttonMargin, 48, 38);
 
@@ -376,6 +376,7 @@
     _calendarMargin = 5;
     _cornerRadius = 6.0;
     _calendarCornerRadius = 4.0;
+    _topHeight = 44.0;
 
     [self setTitleColor:[UIColor whiteColor]];
     [self setTitleFont:[UIFont boldSystemFontOfSize:17.0]];
@@ -527,6 +528,12 @@
 - (void)setHighlightVisible:(BOOL)highlightVisible {
     _highlightVisible = highlightVisible;
     self.highlight.hidden = !_highlightVisible;
+}
+
+- (void)setTopHeight:(CGFloat)topHeight
+{
+    _topHeight = topHeight;
+    [self setNeedsLayout];
 }
 
 #pragma mark - Calendar helpers
