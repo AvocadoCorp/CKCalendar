@@ -131,6 +131,8 @@
 @synthesize disabledDateTextColor = _disabledDateTextColor;
 @synthesize disabledDateBackgroundColor = _disabledDateBackgroundColor;
 @synthesize calendarMargin = _calendarMargin;
+@synthesize cornerRadius = _cornerRadius;
+@synthesize calendarCornerRadius = _calendarCornerRadius;
 @synthesize cellWidth = _cellWidth;
 
 @synthesize calendarStartDay = _calendarStartDay;
@@ -160,11 +162,11 @@
     self.calendarStartDay = firstDay;
     self.shouldFillCalendar = NO;
 
-    self.layer.cornerRadius = 6.0f;
+    self.layer.cornerRadius = self.cornerRadius;
 
     UIView *highlight = [[UIView alloc] initWithFrame:CGRectZero];
     highlight.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.2];
-    highlight.layer.cornerRadius = 6.0f;
+    highlight.layer.cornerRadius = self.cornerRadius;
     [self addSubview:highlight];
     self.highlight = highlight;
 
@@ -195,7 +197,7 @@
     calendarContainer.layer.borderWidth = 1.0f;
     calendarContainer.layer.borderColor = [UIColor blackColor].CGColor;
     calendarContainer.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    calendarContainer.layer.cornerRadius = 4.0f;
+    calendarContainer.layer.cornerRadius = self.calendarCornerRadius;
     calendarContainer.clipsToBounds = YES;
     [self addSubview:calendarContainer];
     self.calendarContainer = calendarContainer;
@@ -369,6 +371,8 @@
     self.backgroundColor = UIColorFromRGB(0x393B40);
 
     _calendarMargin = 5;
+    _cornerRadius = 6.0;
+    _calendarCornerRadius = 4.0;
 
     [self setTitleColor:[UIColor whiteColor]];
     [self setTitleFont:[UIFont boldSystemFontOfSize:17.0]];

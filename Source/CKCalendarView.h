@@ -72,6 +72,8 @@ typedef int startDay;
 @property (nonatomic, strong) UIColor *disabledDateTextColor;
 @property (nonatomic, strong) UIColor *disabledDateBackgroundColor;
 @property (nonatomic, assign) CGFloat calendarMargin;
+@property (nonatomic, assign) CGFloat cornerRadius;
+@property (nonatomic, assign) CGFloat calendarCornerRadius;
 
 @end
 
