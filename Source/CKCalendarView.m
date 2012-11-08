@@ -260,17 +260,32 @@
     return self;
 }
 
+- (CGFloat)measuredHeight
+{
+    return [self containerHeight] + self.calendarMargin + self.topHeight;
+}
+
+- (CGFloat)containerHeight
+{
+    return ([self numberOfWeeksInMonthContainingDate:self.monthShowing] * (self.cellWidth + CELL_BORDER_WIDTH) + DAYS_HEADER_HEIGHT);
+}
+
+- (CGFloat)containerWidth
+{
+    return self.bounds.size.width - (self.calendarMargin * 2);
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    CGFloat containerWidth = self.bounds.size.width - (self.calendarMargin * 2);
+    CGFloat containerWidth = [self containerWidth];
     self.cellWidth = (containerWidth / 7.0) - CELL_BORDER_WIDTH;
 
-    CGFloat containerHeight = ([self numberOfWeeksInMonthContainingDate:self.monthShowing] * (self.cellWidth + CELL_BORDER_WIDTH) + DAYS_HEADER_HEIGHT);
+    CGFloat containerHeight = [self containerHeight];
 
 
     CGRect newFrame = self.frame;
-    newFrame.size.height = containerHeight + self.calendarMargin + self.topHeight;
+    newFrame.size.height = [self measuredHeight];
     self.frame = newFrame;
 
     self.highlight.frame = CGRectMake(1, 1, self.bounds.size.width - 2, 1);

@@ -35,6 +35,9 @@ typedef int startDay;
 - (id)initWithStartDay:(startDay)firstDay;
 - (id)initWithStartDay:(startDay)firstDay frame:(CGRect)frame;
 
+// Calculated getters
+@property (nonatomic, readonly) CGFloat measuredHeight;
+
 // Theming
 - (void)setTitleFont:(UIFont *)font;
 - (UIFont *)titleFont;
