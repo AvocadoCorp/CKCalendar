@@ -133,6 +133,7 @@
 @synthesize calendarMargin = _calendarMargin;
 @synthesize cornerRadius = _cornerRadius;
 @synthesize calendarCornerRadius = _calendarCornerRadius;
+@synthesize highlightVisible = _highlightVisible;
 @synthesize cellWidth = _cellWidth;
 
 @synthesize calendarStartDay = _calendarStartDay;
@@ -161,12 +162,14 @@
 
     self.calendarStartDay = firstDay;
     self.shouldFillCalendar = NO;
+    _highlightVisible = YES;
 
     self.layer.cornerRadius = self.cornerRadius;
 
     UIView *highlight = [[UIView alloc] initWithFrame:CGRectZero];
     highlight.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.2];
     highlight.layer.cornerRadius = self.cornerRadius;
+    highlight.hidden = !_highlightVisible;
     [self addSubview:highlight];
     self.highlight = highlight;
 
@@ -519,6 +522,11 @@
 }
 - (UIColor *)dateBorderColor {
     return self.calendarContainer.backgroundColor;
+}
+
+- (void)setHighlightVisible:(BOOL)highlightVisible {
+    _highlightVisible = highlightVisible;
+    self.highlight.hidden = !_highlightVisible;
 }
 
 #pragma mark - Calendar helpers
