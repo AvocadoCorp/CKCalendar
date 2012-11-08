@@ -368,10 +368,22 @@
 }
 
 - (void)setMonthShowing:(NSDate *)aMonthShowing {
-    _monthShowing = [self firstDayOfMonthContainingDate:aMonthShowing];
+    NSDate *newMonthShowing = [self firstDayOfMonthContainingDate:aMonthShowing];
+    BOOL monthShowingChanged = ![newMonthShowing isEqualToDate:_monthShowing];
+    if(monthShowingChanged) {
+        _monthShowing = newMonthShowing;
+    }
 
     self.titleLabel.text = [self.dateFormatter stringFromDate:_monthShowing];
+    CGFloat oldHeight = self.bounds.size.height;
     [self setNeedsLayout];
+    if(monthShowingChanged && [self.delegate respondsToSelector:@selector(calendar:didSwitchToMonth:)]) {
+        [self.delegate calendar:self didSwitchToMonth:_monthShowing];
+    }
+    CGFloat newHeight = self.measuredHeight;
+    if((oldHeight != newHeight) && [self.delegate respondsToSelector:@selector(calendar:didChangeHeight:)]) {
+        [self.delegate calendar:self didChangeHeight:newHeight];
+    }
 }
 
 - (void)setSelectedDate:(NSDate *)selectedDate {

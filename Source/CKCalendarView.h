@@ -85,5 +85,7 @@ typedef int startDay;
 @protocol CKCalendarDelegate <NSObject>
 
 - (void)calendar:(CKCalendarView *)calendar didSelectDate:(NSDate *)date;
+- (void)calendar:(CKCalendarView *)calendar didSwitchToMonth:(NSDate *)monthShowing;
+- (void)calendar:(CKCalendarView *)calendar didChangeHeight:(CGFloat)newHeight;
 
 @end
