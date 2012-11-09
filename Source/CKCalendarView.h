@@ -37,6 +37,8 @@ typedef int startDay;
 
 // Calculated getters
 @property (nonatomic, readonly) CGFloat measuredHeight;
+@property (nonatomic, readonly) NSDate *firstVisibleDate;
+@property (nonatomic, readonly) NSDate *lastVisibleDate;
 
 // Theming
 - (void)setTitleFont:(UIFont *)font;

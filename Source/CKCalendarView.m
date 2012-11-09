@@ -316,6 +316,28 @@
     return self.bounds.size.width - (self.calendarMargin * 2);
 }
 
+- (NSDate *)firstVisibleDate
+{
+    NSDate *date = [self firstDayOfMonthContainingDate:self.monthShowing];
+    if (self.shouldFillCalendar) {
+        while ([self placeInWeekForDate:date] != 0) {
+            date = [self previousDay:date];
+        }
+    }
+    return date;
+}
+
+- (NSDate *)lastVisibleDate
+{
+    NSDate *endDate = [self firstDayOfNextMonthContainingDate:self.monthShowing];
+    if (self.shouldFillCalendar) {
+        while ([self placeInWeekForDate:endDate] != 0) {
+            endDate = [self nextDay:endDate];
+        }
+    }
+    return endDate;
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
 
@@ -349,19 +371,9 @@
         [dateButton removeFromSuperview];
     }
 
-    NSDate *date = [self firstDayOfMonthContainingDate:self.monthShowing];
-    if (self.shouldFillCalendar) {
-        while ([self placeInWeekForDate:date] != 0) {
-            date = [self previousDay:date];
-        }
-    }
+    NSDate *date = [self firstVisibleDate];
 
-    NSDate *endDate = [self firstDayOfNextMonthContainingDate:self.monthShowing];
-    if (self.shouldFillCalendar) {
-        while ([self placeInWeekForDate:endDate] != 0) {
-            endDate = [self nextDay:endDate];
-        }
-    }
+    NSDate *endDate = [self lastVisibleDate];
 
     NSUInteger dateButtonPosition = 0;
     while ([date laterDate:endDate] != date) {
