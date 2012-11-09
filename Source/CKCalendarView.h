@@ -81,6 +81,9 @@ typedef int startDay;
 @property (nonatomic, assign) CGFloat topHeight;
 @property (nonatomic, assign) CGFloat daysHeaderHeight;
 
+// Marking dates
+@property (nonatomic, strong) NSArray *markedDates;
+
 @end
 
 @protocol CKCalendarDelegate <NSObject>

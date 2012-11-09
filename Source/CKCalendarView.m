@@ -66,6 +66,9 @@
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSCalendar *calendar;
 
+@property (nonatomic, assign) BOOL marked;
+@property (nonatomic, strong) UILabel *markLabel;
+
 @end
 
 @implementation DateButton
@@ -73,10 +76,47 @@
 @synthesize date = _date;
 @synthesize calendar = _calendar;
 
+@synthesize marked = _marked;
+@synthesize markLabel = _markLabel;
+
 - (void)setDate:(NSDate *)date {
     _date = date;
     NSDateComponents *comps = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit fromDate:date];
     [self setTitle:[NSString stringWithFormat:@"%d", comps.day] forState:UIControlStateNormal];
+}
+
+- (void)setMarked:(BOOL)marked
+{
+    _marked = marked;
+    if(_marked && self.markLabel == nil) {
+        self.markLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        self.markLabel.font = self.titleLabel.font;
+        self.markLabel.textColor = self.currentTitleColor;
+        self.markLabel.backgroundColor = [UIColor clearColor];
+        self.markLabel.text = @"•";
+        [self.markLabel sizeToFit];
+        [self insertSubview:self.markLabel aboveSubview:self.titleLabel];
+        [self setNeedsLayout];
+
+    } else if(!_marked && self.markLabel != nil){
+        
+        [self.markLabel removeFromSuperview];
+        self.markLabel = nil;
+    }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if(self.markLabel != nil) {
+        self.markLabel.center = CGPointMake(self.titleLabel.center.x, self.titleLabel.center.y + 16);
+    }
+}
+
+- (CGRect)titleRectForContentRect:(CGRect)contentRect
+{
+    self.markLabel.textColor = self.currentTitleColor;
+    return [super titleRectForContentRect:contentRect];
 }
 
 @end
@@ -133,6 +173,7 @@
 @synthesize highlightVisible = _highlightVisible;
 @synthesize topHeight = _topHeight;
 @synthesize daysHeaderHeight = _daysHeaderHeight;
+@synthesize markedDates = _markedDates;
 @synthesize cellWidth = _cellWidth;
 
 @synthesize calendarStartDay = _calendarStartDay;
@@ -327,6 +368,7 @@
         DateButton *dateButton = [self.dateButtons objectAtIndex:dateButtonPosition];
 
         dateButton.date = date;
+        dateButton.marked = [self.markedDates containsObject:date];
         if ([self date:dateButton.date isSameDayAsDate:self.selectedDate]) {
             dateButton.backgroundColor = self.selectedDateBackgroundColor;
             [dateButton setTitleColor:self.selectedDateTextColor forState:UIControlStateNormal];
@@ -567,6 +609,13 @@
 - (void)setDaysHeaderHeight:(CGFloat)daysHeaderHeight
 {
     _daysHeaderHeight = daysHeaderHeight;
+    [self setNeedsLayout];
+}
+
+#pragma mark - Marking dates
+- (void)setMarkedDates:(NSArray *)markedDates
+{
+    _markedDates = markedDates;
     [self setNeedsLayout];
 }
 
