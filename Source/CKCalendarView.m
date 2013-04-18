@@ -21,7 +21,7 @@
 #import "CKCalendarView.h"
 
 #define DEFAULT_CELL_WIDTH 43
-#define CELL_BORDER_WIDTH 1
+#define CELL_BORDER_WIDTH 2
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -162,6 +162,7 @@
 @synthesize dateTextColor = _dateTextColor;
 @synthesize selectedDateTextColor = _selectedDateTextColor;
 @synthesize selectedDateBackgroundColor = _selectedDateBackgroundColor;
+@synthesize selectedDateBorderColor = _selectedDateBorderColor;
 @synthesize currentDateTextColor = _currentDateTextColor;
 @synthesize currentDateBackgroundColor = _currentDateBackgroundColor;
 @synthesize nonCurrentMonthDateTextColor = _nonCurrentMonthDateTextColor;
@@ -222,14 +223,14 @@
     self.titleLabel = titleLabel;
 
     UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [prevButton setImage:[UIImage imageNamed:@"left_arrow.png"] forState:UIControlStateNormal];
+    [prevButton setImage:[UIImage imageNamed:@"calendar-header-left-arrow.png"] forState:UIControlStateNormal];
     prevButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
     [prevButton addTarget:self action:@selector(moveCalendarToPreviousMonth) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:prevButton];
     self.prevButton = prevButton;
 
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [nextButton setImage:[UIImage imageNamed:@"right_arrow.png"] forState:UIControlStateNormal];
+    [nextButton setImage:[UIImage imageNamed:@"calendar-header-right-arrow.png"] forState:UIControlStateNormal];
     nextButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
     [nextButton addTarget:self action:@selector(moveCalendarToNextMonth) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:nextButton];
@@ -381,9 +382,12 @@
 
         dateButton.date = date;
         dateButton.marked = [self.markedDates containsObject:date];
+		dateButton.layer.borderColor = [self.selectedDateBorderColor CGColor];
+		dateButton.layer.borderWidth = 0.0f;
         if ([self date:dateButton.date isSameDayAsDate:self.selectedDate]) {
             dateButton.backgroundColor = self.selectedDateBackgroundColor;
             [dateButton setTitleColor:self.selectedDateTextColor forState:UIControlStateNormal];
+			dateButton.layer.borderWidth = CELL_BORDER_WIDTH;
         } else if ([self dateIsToday:dateButton.date]) {
             [dateButton setTitleColor:self.currentDateTextColor forState:UIControlStateNormal];
             dateButton.backgroundColor = self.currentDateBackgroundColor;
@@ -399,7 +403,10 @@
             dateButton.backgroundColor = [self dateBackgroundColor];
         }
 
-        dateButton.frame = [self calculateDayCellFrame:date];
+		if ([self date:dateButton.date isSameDayAsDate:self.selectedDate])
+			dateButton.frame = CGRectInset([self calculateDayCellFrame:date], -CELL_BORDER_WIDTH, -CELL_BORDER_WIDTH);
+		else
+			dateButton.frame = [self calculateDayCellFrame:date];
 
         [self.calendarContainer addSubview:dateButton];
 
@@ -472,9 +479,9 @@
     [self setDateBackgroundColor:UIColorFromRGB(0xF2F2F2)];
     [self setDateBorderColor:UIColorFromRGB(0xDAE1E6)];
 
-
-    [self setSelectedDateTextColor:UIColorFromRGB(0xF2F2F2)];
-    [self setSelectedDateBackgroundColor:UIColorFromRGB(0x88B6DB)];
+	[self setSelectedDateTextColor:UIColorFromRGB(0xF2F2F2)];
+	[self setSelectedDateBackgroundColor:UIColorFromRGB(0x88B6DB)];
+	[self setSelectedDateBorderColor:UIColorFromRGB(0xDAE1E6)];
 
     [self setCurrentDateTextColor:UIColorFromRGB(0xF2F2F2)];
     [self setCurrentDateBackgroundColor:[UIColor lightGrayColor]];
@@ -541,9 +548,23 @@
     return self.titleLabel.textColor;
 }
 
+- (void)setTitleShadowColor:(UIColor*)color {
+	self.titleLabel.shadowColor = color;
+}
+- (UIColor*)titleShadowColor {
+	return self.titleLabel.shadowColor;
+}
+
+- (void)setTitleShadowOffset:(CGSize)offset {
+	self.titleLabel.shadowOffset = offset;
+}
+- (CGSize)titleShadowOffset {
+	return self.titleLabel.shadowOffset;
+}
+
 - (void)setButtonColor:(UIColor *)color {
-    [self.prevButton setImage:[CKCalendarView imageNamed:@"left_arrow.png" withColor:color] forState:UIControlStateNormal];
-    [self.nextButton setImage:[CKCalendarView imageNamed:@"right_arrow.png" withColor:color] forState:UIControlStateNormal];
+    [self.prevButton setImage:[CKCalendarView imageNamed:@"calendar-header-left-arrow.png" withColor:color] forState:UIControlStateNormal];
+    [self.nextButton setImage:[CKCalendarView imageNamed:@"calendar-header-right-arrow.png" withColor:color] forState:UIControlStateNormal];
 }
 
 - (void)setInnerBorderColor:(UIColor *)color {

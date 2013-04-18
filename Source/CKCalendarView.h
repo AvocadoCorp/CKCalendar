@@ -47,6 +47,12 @@ typedef int startDay;
 - (void)setTitleColor:(UIColor *)color;
 - (UIColor *)titleColor;
 
+- (void)setTitleShadowColor:(UIColor*)color;
+- (UIColor*)titleShadowColor;
+
+- (void)setTitleShadowOffset:(CGSize)offset;
+- (CGSize)titleShadowOffset;
+
 - (void)setButtonColor:(UIColor *)color;
 
 - (void)setInnerBorderColor:(UIColor *)color;
@@ -71,6 +77,7 @@ typedef int startDay;
 @property (nonatomic, strong) UIColor *dateTextColor;
 @property (nonatomic, strong) UIColor *selectedDateTextColor;
 @property (nonatomic, strong) UIColor *selectedDateBackgroundColor;
+@property (nonatomic, strong) UIColor *selectedDateBorderColor;
 @property (nonatomic, strong) UIColor *currentDateTextColor;
 @property (nonatomic, strong) UIColor *currentDateBackgroundColor;
 @property (nonatomic, strong) UIColor *nonCurrentMonthDateTextColor;
