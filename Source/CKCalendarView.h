@@ -89,6 +89,7 @@ typedef int startDay;
 @property (nonatomic, assign) BOOL highlightVisible;
 @property (nonatomic, assign) CGFloat topHeight;
 @property (nonatomic, assign) CGFloat daysHeaderHeight;
+@property (nonatomic, assign) CGFloat cellBorderWidth;
 
 // Marking dates
 @property (nonatomic, strong) NSArray *markedDates;
