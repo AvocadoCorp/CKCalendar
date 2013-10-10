@@ -16,8 +16,8 @@
 //
 
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
+@import CoreGraphics;
 #import "CKCalendarView.h"
 
 #define DEFAULT_CELL_WIDTH 43
